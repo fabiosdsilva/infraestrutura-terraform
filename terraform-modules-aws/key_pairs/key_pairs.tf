@@ -5,10 +5,16 @@ resource "tls_private_key" "tsl_key_pair" {
   rsa_bits  = 4096
 }
 
+locals {
+  timestamp = "${timestamp()}"
+  timestamp_sanitized = "${replace("${local.timestamp}", "/[-| |T|Z|:]/", "")}"
+
+}
+
 resource "aws_key_pair" "key_pair" {
   count      = length(var.key_name)
 
-  key_name   = var.key_name[count.index]
+  key_name   = "${var.key_name[count.index]}-${local.timestamp_sanitized}"
   public_key = tls_private_key.tsl_key_pair[count.index].public_key_openssh
 }
 
