@@ -2,7 +2,7 @@ resource "aws_route53_zone" "main" {
   name = var.name
 }
 
-resource "aws_route53_record" "dev-ns" {
+resource "aws_route53_record" "server" {
   count = length(var.records)
 
   zone_id = aws_route53_zone.main.zone_id
@@ -10,5 +10,5 @@ resource "aws_route53_record" "dev-ns" {
   name    = var.records[count.index].name
   type    = var.records[count.index].type
   ttl     = var.records[count.index].ttl
-  records = ["${var.records[count.index].records}"]
+  records = var.records[count.index].records
 }

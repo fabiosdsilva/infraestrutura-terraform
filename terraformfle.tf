@@ -26,7 +26,33 @@ module "ec2" {
   ]
 }
 
+## Route 53
+module "route_53" {
+  source = "./terraform-modules-aws/route_53"
+
+  ## Nome da zona de hospedagem
+  name = "infraascode.online"
+
+  ## Subdominios
+  records = [
+    {
+      name    = "web-server.infraascode.online"
+      type    = "A"
+      ttl     = 300
+      records = ["${module.ec2.instance_address[0]}"]
+    }
+  ]
+
+  depends_on = [
+    module.ec2
+  ]
+}
+
 ## Outputs
 output "public_ip" {
   value = module.ec2.instance_address
+}
+
+output "record_name" {
+  value = module.route_53.record_name
 }

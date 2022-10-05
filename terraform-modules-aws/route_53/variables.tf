@@ -8,7 +8,7 @@ variable "records" {
   type          = list(object({
     name    = string
     type    = string
-    ttl     = string
+    ttl     = number
     records = list(string)
   }))
 }
