@@ -15,6 +15,7 @@ resource "aws_instance" "web-servers" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2-web-servers[count.index].instance_type
   key_name      = var.ec2-web-servers[count.index].key_name
+  user_data = file("${path.root}/scripts/install.sh")
 
   ebs_block_device {
     device_name = "/dev/sda1"
