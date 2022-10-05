@@ -53,6 +53,10 @@ output "public_ip" {
   value = module.ec2.instance_address
 }
 
+output "public_dns" {
+  value = module.ec2.instance_address_dns
+}
+
 output "record_name" {
   value = module.route_53.record_name
 }
