@@ -2,7 +2,7 @@
 module "key_pairs" {
   source = "./terraform-modules-aws/key_pairs"
 
-  keys = [
+  key_name = [
     "web-server"
   ]
 }
@@ -24,4 +24,9 @@ module "ec2" {
   depends_on = [
     module.key_pairs
   ]
+}
+
+## Outputs
+output "public_ip" {
+  value = module.ec2.instance_address
 }
