@@ -10,20 +10,20 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "web-servers" {
-  for_each = var.ec2-web-servers
+  count = length(var.ec2-web-servers)
 
   ami           = data.aws_ami.ubuntu.id
-  instance_type = each.value.instance_type
-  key_name      = each.value.key_name
+  instance_type = var.ec2-web-servers[count.index].instance_type
+  key_name      = var.ec2-web-servers[count.index].key_name
 
   ebs_block_device {
     device_name = "/dev/sda1"
-    volume_size = each.value.volume_size
-    volume_type = each.value.volume_type
+    volume_size = var.ec2-web-servers[count.index].volume_size
+    volume_type = var.ec2-web-servers[count.index].volume_type
   }
 
   tags = {
-    Name = "${trimspace(each.value.name)}"
+    Name = "${trimspace(var.ec2-web-servers[count.index].name)}"
   }
 
 }
